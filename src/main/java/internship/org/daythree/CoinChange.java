@@ -4,6 +4,28 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class CoinChange {
+    public static int dynamicProgramming(int[] arr,int userAmount){
+        int[] poss=new int[userAmount+1];
+        //System.out.println(poss.length);
+        Arrays.fill(poss,userAmount+1);
+        // initial solution
+        //System.out.println(Arrays.toString(poss));
+        poss[0]=0;
+        for(int each:arr){
+            // each is 500
+            //System.out.println(each);
+            int current;
+            for(current=each;current<=userAmount;current++){
+                // 500
+                poss[current]=Math.min(poss[current],poss[current-each]+1);
+                //System.out.println(poss[current]+" will occupy "+Math.min(poss[current],poss[current-each]+1));
+                //System.out.println(poss[current]+" @ "+current);
+            }
+            //System.out.println(each+" end of iteration "+poss[poss.length-1]);
+        }
+        //System.out.println(Arrays.toString(poss));
+        return (poss[userAmount]<=userAmount)?poss[userAmount]:-1;
+    }
     // O(2n)
     public static int divideNConquer(int[] arr, int size, int user){
         if(user==0)
@@ -42,7 +64,8 @@ public class CoinChange {
         System.out.println("Tell us required cash ");
         userWish = scanner.nextInt();
         // int counts = greedy(denominations, userWish);
-        int counts = divideNConquer(denominations, denominations.length ,userWish);
+        // int counts = divideNConquer(denominations, denominations.length ,userWish);
+        int counts = dynamicProgramming(denominations, userWish);
         if(counts!=Integer.MAX_VALUE)
             System.out.println("Count of notes "+counts);
         else
